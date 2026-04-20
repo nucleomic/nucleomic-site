@@ -1,5 +1,7 @@
 # Nucleomic AB1 Analyzer
 
+[![DOI](https://zenodo.org/badge/1212055708.svg)](https://doi.org/10.5281/zenodo.19672829)
+
 Nucleomic AB1 Analyzer is a web-based platform for preprocessing `.ab1` Sanger sequencing files, exporting FASTA output, running multiple sequence alignment (MSA), and generating phylogenetic trees.
 
 This repository contains the FastAPI backend, static frontend, Redis-backed queue workflow, worker services, and deployment templates used to run the application.
