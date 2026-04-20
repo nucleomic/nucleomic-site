@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "Nucleomic AB1 Analyzer"
+message: "If you use this software in academic work, please cite it using the metadata below."
+type: software
+authors:
+  - family-names: "Amil"
+    given-names: "İlteriş Eren"
+    affiliation: "Nucleomic"
+repository-code: "https://github.com/nucleomic/nucleomic-site"
+url: "https://www.nucleomic.com"
+abstract: >-
+  Web-based AB1/Sanger preprocessing, FASTA export, multiple sequence alignment,
+  and phylogenetic tree generation platform.
+keywords:
+  - Sanger sequencing
+  - AB1
+  - FASTA
+  - sequence alignment
+  - phylogenetics
+license: "Apache-2.0"
+version: "1.0.0-beta"
+date-released: "2026-04-21"

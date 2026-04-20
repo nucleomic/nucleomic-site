@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - Nucleomic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="nucleomic-legal.css">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+<body>
+<div class="site-shell">
+
+  <header class="site-nav">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <img src="../logo/logo.png" alt="Nucleomic logo" class="nav-logo" />
+        <div class="nav-title">NUCLEOMIC</div>
+      </div>
+      <nav class="nav-links">
+        <a href="../upload.html">Home</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="page-main">
+    <div class="page-inner">
+    <div id="contact-toast" class="contact-toast"></div>
+
+      <header class="page-header">
+        <div class="page-kicker">Support & Feedback</div>
+        <h1 class="page-title">Contact</h1>
+        <p class="page-subtitle">
+          Reach out for technical issues, privacy questions, collaboration ideas,
+          or feedback about Nucleomic.
+        </p>
+      </header>
+
+      <div class="contact-grid">
+
+        <section class="contact-card">
+          <h2>Contact Information</h2>
+          <p>
+            You can contact us using the email address below. We aim to respond
+            to important requests as soon as possible.
+          </p>
+
+          <ul class="contact-list">
+            <li><strong>Email:</strong> contact@nucleomic.com</li>
+          </ul>
+
+          <p>Typical topics you can contact us about:</p>
+          <ul class="contact-list">
+            <li>Privacy, data protection, and security</li>
+            <li>Technical issues, bugs, or unexpected behaviour</li>
+            <li>Feature requests, collaborations, and academic projects</li>
+            <li>Questions about using Nucleomic in teaching or research</li>
+          </ul>
+        </section>
+
+        <section class="contact-card">
+          <h2>Send a Message</h2>
+          <p class="meta">
+            You can contact us for your opinions, suggestions and complaints.
+          </p>
+
+          <form action="https://script.google.com/a/macros/nucleomic.com/s/AKfycbxAxYwHKiwOgDms1TTE7WsyAVzXJfnnRrVpElyImYuMNzvvpVGyzbKxII7TRUanpfaK/exec" method="post" target="contact_hidden_iframe" id="contact-form">
+            <div class="form-group">
+              <label class="form-label" for="name">Name</label>
+              <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="topic">Topic</label>
+              <input class="form-input" type="text" id="topic" name="topic" placeholder="Subject of your message" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="message">Message</label>
+              <textarea class="form-textarea" id="message" name="message" placeholder="How can we help?" required></textarea>
+            </div>
+
+            <input type="text" name="website" style="display:none">
+
+            <button type="submit" class="btn-primary">Send Message</button>
+          </form>
+          <iframe name="contact_hidden_iframe" id="contact_hidden_iframe" style="display:none;"></iframe>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer clean-legal-footer">
+    <div class="footer-inner">
+      <div class="footer-copy">© 2026 Nucleomic. All rights reserved.</div>
+
+      <div class="footer-links">
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="footer-socials" aria-label="Social media links">
+        <a
+          class="footer-social-link instagram"
+          href="https://instagram.com/nucle.omic"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+        >
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a
+          class="footer-social-link x"
+          href="https://x.com/nucleomic"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="X"
+        >
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+
+        <a
+          class="footer-social-link github"
+          href="https://github.com/nucleomic"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+        >
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+</div>
+<script>
+  (function () {
+    const form = document.getElementById('contact-form');
+    const toast = document.getElementById('contact-toast');
+    const iframe = document.getElementById('contact_hidden_iframe');
+    const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+    const defaultLabel = submitBtn ? submitBtn.textContent : 'Send Message';
+
+    if (!form || !toast || !iframe) return;
+
+    let submitted = false;
+    let iframeReady = false;
+
+    function showToast(message, type) {
+      toast.textContent = message;
+      toast.className = 'contact-toast show ' + type;
+
+      setTimeout(() => {
+        toast.className = 'contact-toast';
+      }, 3500);
+    }
+
+    iframe.addEventListener('load', function () {
+      if (!iframeReady) {
+        iframeReady = true;
+        return;
+      }
+
+      if (!submitted) return;
+
+      submitted = false;
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = defaultLabel;
+      }
+
+      showToast('The message has been sent successfully.', 'success');
+      form.reset();
+    });
+
+    form.addEventListener('submit', function () {
+      submitted = true;
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+      }
+    });
+  })();
+</script>
+</body>
+</html>

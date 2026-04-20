@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+biopython
+python-dotenv
+redis
+python-multipart
+pydantic-settings
+email-validator

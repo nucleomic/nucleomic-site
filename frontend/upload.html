@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB1 Analyzer Web</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="upload-mobile.css">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+<body>
+  <canvas id="dna-canvas" class="dna-bg"></canvas>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <img src="logo/logo.png" alt="Nucleomic" class="brand-logo" />
+        <div class="brand-text">
+          <div class="brand-name">Nucleomic</div>
+          <div class="hero-stack">
+            <div class="brand-subtitle">AB1 Analyzer - Beta</div>
+          </div>
+        </div>
+      </div>
+      <nav class="top-links" aria-label="Info pages">
+        <a href="pages/contact.html">Contact</a>
+        <a href="pages/terms.html">Terms of Use</a>
+        <a href="pages/privacy-policy.html">Privacy Policy</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section id="ab1-tool" class="panel">
+        <form id="ab1-form" class="stack">
+          <div class="card stack upload-card" id="upload-card">
+            <div class="card-header upload-card-header">
+              <div>
+                <div class="eyebrow">Upload</div>
+                <div class="card-title">.ab1 files</div>
+                <p class="card-subtitle">Drag & drop or choose files</p>
+              </div>
+              <button type="button" id="btn-toggle-upload" class="upload-toggle-btn" style="display:none;">Hide panel</button>
+            </div>
+            <div class="upload-card-body">
+              <div class="field file-input-row">
+                <span>Select from computer</span>
+                <input type="file" name="files" multiple accept=".ab1" class="file-input-hidden" id="file-input-hidden" />
+                <label for="file-input-hidden" class="btn btn-tonal" id="btn-file-picker" style="cursor:pointer;">Choose files</label>
+                <span class="file-picker-hint" id="file-picker-hint">No files selected.</span>
+              </div>
+              <div class="file-list-toggle-row">
+                <button type="button" id="btn-toggle-files" class="file-list-toggle" style="display:none;">Show file list</button>
+              </div>
+              <div id="file-list-wrapper" class="file-list-wrapper">
+                <div id="file-list" class="file-list">No files selected.</div>
+              </div>
+              <div id="drop-zone" class="drop-zone">
+                <div class="drop-title">Drag and drop files</div>
+                <div class="drop-sub">or click to select</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stack">
+            <div class="card-header">
+              <div>
+                <div class="eyebrow">MSA engine</div>
+                <div class="card-title">Alignment preference</div>
+              </div>
+            </div>
+            <div class="chip-group">
+              <label class="chip">
+                <input type="radio" name="engine" value="muscle" checked />
+                MUSCLE
+              </label>
+              <label class="chip">
+                <input type="radio" name="engine" value="clustalw" />
+                ClustalW
+              </label>
+            </div>
+          </div>
+
+          <div class="card stack">
+            <div class="card-header">
+              <div>
+                <div class="eyebrow">Filter & mode</div>
+                <div class="card-title">Quality & position</div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="quality-threshold">Quality threshold (Q)</label>
+              <input id="quality-threshold" type="number" name="quality_threshold" value="20" />
+            </div>
+            <div class="field">
+              <span>Mode</span>
+              <div class="chip-group">
+                <label class="chip">
+                  <input type="radio" name="mode" value="gap" checked />
+                  gap (-)
+                </label>
+                <label class="chip">
+                  <input type="radio" name="mode" value="mask" />
+                  mask (N)
+                </label>
+                <label class="chip">
+                  <input type="radio" name="mode" value="delete" />
+                  delete
+                </label>
+              </div>
+            </div>
+            <div class="field">
+              <label for="position-expr">Positional selection (optional)</label>
+              <input id="position-expr" type="text" name="position_expr" placeholder="0-50, 80, 90, 172, 456, 500+" />
+            </div>
+          </div>
+
+          <div class="card stack">
+            <div class="card-header">
+              <div>
+                <div class="eyebrow">Actions</div>
+                <div class="card-title">Start tasks</div>
+              </div>
+            </div>
+            <div class="actions">
+              <button type="button" id="btn-msa-show" class="btn btn-primary">Run MSA</button>
+              <button type="button" id="btn-tree-show" class="btn">Phylogenetic Tree (IQ-TREE)</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div id="task-loader-msa" class="loader-bar" aria-live="polite" style="display:none;">
+          <div class="loader-header">
+            <span id="task-loader-label-msa">Starting task...</span>
+            <span class="pill">loading</span>
+          </div>
+          <div class="loader-track" id="task-loader-track-msa">
+            <div class="loader-seq" id="task-loader-seq-msa">
+              ACGTCCGTAAGGCTAATCGATTCGACGTCCGTAAGGCTAATCGATTCTACGTCCGTAAGGCTAATCGATTCGACGTCCGTAAGGCTAATCGATTCTTGACGCT
+            </div>
+            <div class="loader-shine"></div>
+          </div>
+        </div>
+        <div class="card output-card">
+          <div class="card-header">
+            <div>
+              <div class="eyebrow">MSA</div>
+              <div class="card-title">Alignment Preview</div>
+              <p class="card-subtitle">View results in the editable panel.</p>
+            </div>
+            <div id="msa-download-area" class="toolbar" style="display:none;">
+              <button type="button" id="btn-msa-download" class="btn btn-tonal">Download MSA FASTA</button>
+            </div>
+          </div>
+          <div id="msa-container" class="output-panel"></div>
+        </div>
+
+        <div id="task-loader-tree" class="loader-bar" aria-live="polite" style="display:none;">
+          <div class="loader-header">
+            <span id="task-loader-label-tree">Starting task...</span>
+            <span class="pill">loading</span>
+          </div>
+          <div class="loader-track" id="task-loader-track-tree">
+            <div class="loader-seq" id="task-loader-seq-tree">
+              ACGTCCGTAAGGCTAATCGATTCGACGTCCGTAAGGCTAATCGATTCTACGTCCGTAAGGCTAATCGATTCGACGTCCGTAAGGCTAATCGATTCTTAGCCGTATAGCTCCGATCGATTTCGATTGCATGGCTATTTATCGATTTCGATCTAGCTACGTA
+            </div>
+            <div class="loader-shine"></div>
+          </div>
+        </div>
+        <div id="job-status-card" class="card queue-card" style="display:none;">
+          <div class="card-header">
+            <div>
+              <div class="eyebrow">Task status</div>
+              <div class="card-title">Local preprocessing & server queue</div>
+              <p class="card-subtitle">You will see local preprocessing, queue position, and run status here.</p>
+            </div>
+          </div>
+
+          <div id="job-status-text" class="status info">Idle</div>
+          <div id="job-position-text" class="muted" style="margin-top:8px;"></div>
+        </div>
+        <div class="card output-card">
+          <div class="card-header">
+            <div>
+              <div class="eyebrow">Phylogenetics</div>
+              <div class="card-title">IQ-TREE Output</div>
+              <p class="card-subtitle">Show the plot and Newick output in the same card.</p>
+            </div>
+            <div id="tree-download-area" class="toolbar" style="display:none;">
+              <button type="button" id="btn-tree-download" class="btn btn-tonal">Download Newick tree (.nwk)</button>
+            </div>
+          </div>
+          <div id="tree-container" class="output-panel"></div>
+
+          <div id="tree-output-panel" class="newick-panel">
+            <label for="tree-newick-output">Indented Newick</label>
+            <textarea id="tree-newick-output" class="monospace"></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer clean-footer">
+      <div class="site-footer-inner">
+        <div class="site-footer-copy">© 2026 Nucleomic. All rights reserved.</div>
+
+        <div class="site-footer-links">
+          <a href="pages/contact.html">Contact</a>
+          <a href="pages/terms.html">Terms of Use</a>
+          <a href="pages/privacy-policy.html">Privacy Policy</a>
+        </div>
+
+        <div class="site-footer-socials" aria-label="Social media links">
+          <a
+            class="site-footer-social instagram"
+            href="https://instagram.com/nucle.omic"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+
+          <a
+            class="site-footer-social x"
+            href="https://x.com/nucleomic"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="X"
+          >
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+
+          <a
+            class="site-footer-social github"
+            href="https://github.com/nucleomic"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+          >
+            <i class="fa-brands fa-github"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function initDNABackground() {
+      const canvas = document.getElementById('dna-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const letters = ['A', 'C', 'G', 'T'];
+      const brandStyle = window.getComputedStyle(document.querySelector('.brand-name') || document.body);
+      const fontFamily = brandStyle.fontFamily || '"Inter", "Segoe UI", system-ui, sans-serif';
+      const fontWeight = brandStyle.fontWeight || '700';
+      const glyphCache = new Map();
+      const cfg = {
+        count: 250,
+        minSize: 10,
+        maxSize: 30,
+        minSpeed: 3.5,
+        maxSpeed: 7.0,
+        drift: 2.2,
+        prMax: 1.0
+      };
+
+      let width = 0;
+      let height = 0;
+      let pr = 1;
+      const particles = [];
+
+      function getGlyph(glyph, size) {
+        const key = glyph + '-' + Math.round(size);
+        const hit = glyphCache.get(key);
+        if (hit) return hit;
+        const off = document.createElement('canvas');
+        const offCtx = off.getContext('2d');
+        offCtx.font = `${fontWeight} ${size}px ${fontFamily}`;
+        const metrics = offCtx.measureText(glyph);
+        const w = Math.max(8, Math.ceil(metrics.width + 4));
+        const h = Math.max(8, Math.ceil(size * 1.2));
+        off.width = w;
+        off.height = h;
+        offCtx.font = `${fontWeight} ${size}px ${fontFamily}`;
+        offCtx.fillStyle = '#cbd5e1';
+        offCtx.shadowColor = 'rgba(203, 213, 225, 0.55)';
+        offCtx.shadowBlur = Math.max(2, size * 0.18);
+        offCtx.textBaseline = 'top';
+        offCtx.fillText(glyph, 0, 0);
+        const entry = { canvas: off, w, h };
+        glyphCache.set(key, entry);
+        return entry;
+      }
+
+      function resize() {
+        pr = Math.min(window.devicePixelRatio || 1, cfg.prMax);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * pr;
+        canvas.height = height * pr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(pr, 0, 0, pr, 0, 0);
+      }
+
+      function spawn() {
+        const z = Math.random();
+        const size = cfg.minSize + (cfg.maxSize - cfg.minSize) * z;
+        const speed = cfg.minSpeed + (cfg.maxSpeed - cfg.minSpeed) * z;
+        const angle = Math.random() * Math.PI * 2;
+        return {
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size,
+          speed,
+          angle,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          seed: Math.random() * 10,
+          glyph: letters[(Math.random() * letters.length) | 0],
+          opacity: 0.25 + 0.55 * z
+        };
+      }
+
+      function initParticles() {
+        particles.length = 0;
+        for (let i = 0; i < cfg.count; i++) {
+          particles.push(spawn());
+        }
+      }
+
+      let last = performance.now();
+      let dt = 0.016;
+      function frame(now) {
+        const rawDt = Math.min((now - last) / 1000, 0.02);
+        dt = dt * 0.8 + rawDt * 0.2;
+        last = now;
+        const t = now * 0.001;
+
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+
+          // Yönü yavaşça değiştiren, daha pürüzsüz hareket
+          const theta = p.angle + Math.sin(t * 0.06 + p.seed) * 0.14;
+          const targetVx = Math.cos(theta) * p.speed;
+          const targetVy = Math.sin(theta) * p.speed;
+          p.vx = p.vx * 0.985 + targetVx * 0.015;
+          p.vy = p.vy * 0.985 + targetVy * 0.015;
+
+          const swayX = Math.sin(t * 0.45 + p.seed) * cfg.drift;
+          const swayY = Math.cos(t * 0.5 + p.seed) * cfg.drift * 0.55;
+
+          p.x += (p.vx + swayX) * dt;
+          p.y += (p.vy + swayY) * dt;
+
+          const g = getGlyph(p.glyph, p.size);
+
+          if (p.x < -g.w) p.x = width + g.w;
+          if (p.x > width + g.w) p.x = -g.w;
+          if (p.y < -g.h) p.y = height + g.h;
+          if (p.y > height + g.h) p.y = -g.h;
+
+          ctx.globalAlpha = p.opacity * 0.85;
+          ctx.drawImage(g.canvas, p.x, p.y);
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(frame);
+      }
+
+      resize();
+      initParticles();
+      window.addEventListener('resize', () => {
+        resize();
+        initParticles();
+      });
+      requestAnimationFrame(frame);
+    })();
+  </script>
+
+
+<script src="js/ab1-worker-client.js"></script>
+<script src="js/queue-client.js"></script>
+<script src="js/msa-viewer.js"></script>
+<script src="js/upload-app.js"></script>
+</body>
+</html>
