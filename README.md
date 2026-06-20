@@ -161,7 +161,7 @@ External analysis tools are runtime dependencies and are not distributed as part
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:nucleomic/nucleomic-site.git
+git clone https://github.com/nucleomic/nucleomic-site.git
 cd nucleomic-site
 ```
 
@@ -221,12 +221,12 @@ The default configuration is:
 REDIS_URL=redis://127.0.0.1:6379/0
 ```
 
-### 6. Start the API server
+### 6. Start the API server for local development
 
 ```bash
 uvicorn app.main:app --reload
 ```
-
+Do not use the development reload mode in production.
 ### 7. Start the analysis worker
 
 In a separate terminal:
