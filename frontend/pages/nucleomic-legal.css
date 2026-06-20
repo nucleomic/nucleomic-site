@@ -633,3 +633,14 @@ body {
     justify-content: center;
   }
 }
+
+.nav-home-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.nav-home-link:hover {
+  opacity: 0.95;
+}

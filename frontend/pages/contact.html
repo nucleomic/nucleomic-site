@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/8dfb6e773e5fe3bf7fab84e1/script.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPYZTEXZ83"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-CPYZTEXZ83');
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact - Nucleomic</title>
@@ -10,16 +21,23 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1108019581128355"
+     crossorigin="anonymous"></script>
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="/logo/favicon-64.png">
+  <link rel="apple-touch-icon" href="/logo/favicon-500.png">
 </head>
 <body>
 <div class="site-shell">
 
   <header class="site-nav">
     <div class="nav-inner">
-      <div class="nav-left">
+      <a href="../upload.html" class="nav-left nav-home-link" aria-label="Go to home page">
         <img src="../logo/logo.png" alt="Nucleomic logo" class="nav-logo" />
         <div class="nav-title">NUCLEOMIC</div>
-      </div>
+      </a>
       <nav class="nav-links">
         <a href="../upload.html">Home</a>
         <a href="privacy-policy.html">Privacy</a>
@@ -70,7 +88,7 @@
             You can contact us for your opinions, suggestions and complaints.
           </p>
 
-          <form action="https://script.google.com/a/macros/nucleomic.com/s/AKfycbxAxYwHKiwOgDms1TTE7WsyAVzXJfnnRrVpElyImYuMNzvvpVGyzbKxII7TRUanpfaK/exec" method="post" target="contact_hidden_iframe" id="contact-form">
+          <form action="https://script.google.com/macros/s/AKfycbzRzFAoeASaovHz0llv37L3x1e79HhPyFKGOpZXV0qg63twhwzSCFsRZu7GtgTjHCzVvw/exec" method="post" target="contact_hidden_iframe" id="contact-form">
             <div class="form-group">
               <label class="form-label" for="name">Name</label>
               <input class="form-input" type="text" id="name" name="name" placeholder="Your name" required>
@@ -95,7 +113,7 @@
 
             <button type="submit" class="btn-primary">Send Message</button>
           </form>
-          <iframe name="contact_hidden_iframe" id="contact_hidden_iframe" style="display:none;"></iframe>
+          <iframe name="contact_hidden_iframe" id="contact_hidden_iframe" src="about:blank" style="display:none;"></iframe>
         </section>
 
       </div>
@@ -158,7 +176,7 @@
     if (!form || !toast || !iframe) return;
 
     let submitted = false;
-    let iframeReady = false;
+    let fallbackTimer = null;
 
     function showToast(message, type) {
       toast.textContent = message;
@@ -169,32 +187,69 @@
       }, 3500);
     }
 
-    iframe.addEventListener('load', function () {
-      if (!iframeReady) {
-        iframeReady = true;
-        return;
-      }
-
-      if (!submitted) return;
-
-      submitted = false;
-
+    function resetSubmitButton() {
       if (submitBtn) {
         submitBtn.disabled = false;
         submitBtn.textContent = defaultLabel;
       }
+    }
 
+    function finalizeSuccess() {
+      submitted = false;
+
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+        fallbackTimer = null;
+      }
+
+      resetSubmitButton();
       showToast('The message has been sent successfully.', 'success');
       form.reset();
+    }
+
+    function finalizeError(msg) {
+      submitted = false;
+
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+        fallbackTimer = null;
+      }
+
+      resetSubmitButton();
+      showToast(msg || 'Message could not be confirmed. Please try again.', 'error');
+    }
+
+    window.addEventListener('message', function (event) {
+      console.log('CONTACT MESSAGE:', event.origin, event.data);
+
+      const data = event.data || {};
+      if (data.type !== 'nucleomic-contact') return;
+      if (!submitted) return;
+
+      if (data.status === 'success') {
+        finalizeSuccess();
+      } else {
+        finalizeError(data.message || 'Message could not be sent.');
+      }
     });
 
     form.addEventListener('submit', function () {
       submitted = true;
 
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+      }
+
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
       }
+
+      fallbackTimer = setTimeout(function () {
+        if (submitted) {
+          finalizeError();
+        }
+      }, 15000);
     });
   })();
 </script>

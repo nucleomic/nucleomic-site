@@ -5,8 +5,8 @@ Wants=redis-server.service
 
 [Service]
 Type=simple
-User=www-data
-Group=www-data
+User=deploy
+Group=deploy
 WorkingDirectory=/opt/nucleomic
 EnvironmentFile=/opt/nucleomic/.env
 ExecStart=/opt/nucleomic/.venv/bin/python -m app.workers.msa_tree_worker

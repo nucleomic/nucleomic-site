@@ -43,7 +43,8 @@
     margin-left: 0;
   }
 
-  .top-links a {
+  .top-links a,
+  .top-links .top-link-button {
     font-size: 13px;
     padding: 7px 10px;
   }
@@ -424,7 +425,8 @@
     align-self: auto;
   }
 
-  .top-links a {
+  .top-links a,
+  .top-links .top-link-button {
     width: auto;
     min-height: 0;
     padding: 0.42rem 0.7rem;
@@ -462,7 +464,8 @@
     gap: 0.4rem;
   }
 
-  .top-links a {
+  .top-links a,
+  .top-links .top-link-button {
     font-size: 0.8rem;
     padding: 0.38rem 0.58rem;
   }
@@ -560,5 +563,129 @@
 
   .clean-footer .site-footer-links a {
     width: 100%;
+  }
+}
+
+/* ===== How to use modal / mobile ===== */
+
+@media (max-width: 768px) {
+  .howto-modal {
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .howto-dialog {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 18px 18px 0 0;
+    padding: 22px 18px 18px;
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+
+  .howto-title {
+    margin-right: 42px;
+    font-size: 22px;
+  }
+
+  .howto-text {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .howto-steps {
+    padding-left: 18px;
+    margin-bottom: 18px;
+  }
+
+  .howto-steps li {
+    margin-bottom: 9px;
+    font-size: 14px;
+  }
+
+  .howto-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .howto-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .howto-checkbox {
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .howto-close {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 420px) {
+  .howto-dialog {
+    padding: 20px 16px 16px;
+  }
+
+  .howto-title {
+    font-size: 20px;
+  }
+
+  .howto-badge {
+    font-size: 11px;
+    padding: 5px 9px;
+  }
+}
+
+/* ===== Guided tour / mobile ===== */
+
+@media (max-width: 560px) {
+  .top-link-button {
+    width: 100%;
+    text-align: center;
+    padding: 10px 12px;
+  }
+
+  .guide-popover {
+    width: calc(100vw - 20px);
+    max-width: none;
+    left: 10px !important;
+    right: 10px;
+    bottom: 10px;
+    top: auto !important;
+    transform: none !important;
+    padding: 16px 16px 14px;
+    border-radius: 16px;
+  }
+
+  .guide-title {
+    font-size: 18px;
+  }
+
+  .guide-text {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .guide-actions {
+    flex-direction: column;
+  }
+
+  .guide-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .guide-highlight {
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 3px rgba(87, 161, 255, 0.95),
+      0 0 0 9999px rgba(6, 10, 20, 0.62);
   }
 }

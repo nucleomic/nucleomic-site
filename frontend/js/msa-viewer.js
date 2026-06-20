@@ -631,9 +631,9 @@
         const tooltipX = ev.clientX - wrapperRect.left + scrollX + 10;
         const tooltipY = ev.clientY - wrapperRect.top + scrollY + 10;
 
-        tooltip.style.left = `${tooltipX}px`;
-        tooltip.style.top = `${tooltipY}px`;
-        tooltip.style.display = "block";
+        state.ui.tooltip.style.left = `${tooltipX}px`;
+        state.ui.tooltip.style.top = `${tooltipY}px`;
+        state.ui.tooltip.style.display = "block";
     });
 
     canvas.addEventListener("contextmenu", (ev) => {

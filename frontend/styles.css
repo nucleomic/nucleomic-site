@@ -61,9 +61,11 @@ a {
   align-self: flex-start;
 }
 
-.top-links a {
+.top-links a,
+.top-links .top-link-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
@@ -73,13 +75,26 @@ a {
   text-decoration: none;
   font-weight: 600;
   font-size: 14px;
-  transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  font-family: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
-.top-links a:hover {
+.top-links a:hover,
+.top-links .top-link-button:hover {
   border-color: rgba(34, 197, 94, 0.4);
   color: #b5f3c4;
   box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.18);
+  transform: translateY(-1px);
+}
+
+.top-links .top-link-button:focus-visible,
+.top-links a:focus-visible {
+  outline: 2px solid rgba(87, 161, 255, 0.9);
+  outline-offset: 2px;
 }
 
 .dna-bg {
@@ -131,6 +146,25 @@ a {
   font-weight: 800;
   letter-spacing: -0.01em;
   color: #cbd5e1;
+}
+
+.brand.brand-home-link,
+.brand.brand-home-link:link,
+.brand.brand-home-link:visited,
+.brand.brand-home-link:hover,
+.brand.brand-home-link:focus,
+.brand.brand-home-link:active {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: inherit;
+  text-decoration: none !important;
+}
+
+.brand.brand-home-link * {
+  text-decoration: none !important;
+  color: inherit;
 }
 
 .hero-stack {
@@ -708,6 +742,12 @@ select:focus {
   margin-bottom: 12px;
 }
 
+.tree-viewer-toolbar .btn.is-active {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.28);
+  color: #b5f3c4;
+}
+
 .tree-viewer-surface {
   overflow: auto;
   border: 1px solid #111827;
@@ -737,6 +777,12 @@ select:focus {
   gap: 6px;
   color: var(--muted);
   font-size: 13px;
+}
+
+.tree-viewer-control input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
 }
 
 .tree-viewer-range {
@@ -1223,4 +1269,329 @@ select:focus {
   border-color: #6e5494;
   color: #ffffff;
   box-shadow: 0 10px 24px rgba(110, 84, 148, 0.32);
+}
+
+/* ===== How to use modal ===== */
+
+.howto-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.howto-modal.hidden {
+  display: none;
+}
+
+.howto-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 15, 30, 0.62);
+  backdrop-filter: blur(4px);
+}
+
+.howto-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  background: rgba(14, 22, 38, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  padding: 28px 28px 22px;
+  color: #f4f7fb;
+}
+
+.howto-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(87, 161, 255, 0.14);
+  border: 1px solid rgba(87, 161, 255, 0.24);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.howto-title {
+  margin: 0 32px 10px 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.howto-text {
+  margin: 0 0 18px;
+  color: rgba(244, 247, 251, 0.82);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.howto-steps {
+  margin: 0 0 22px;
+  padding-left: 20px;
+  color: rgba(244, 247, 251, 0.92);
+}
+
+.howto-steps li {
+  margin-bottom: 10px;
+  line-height: 1.55;
+}
+
+.howto-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.howto-actions .btn {
+  min-width: 150px;
+}
+
+.howto-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(244, 247, 251, 0.8);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.howto-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #57a1ff;
+}
+
+.howto-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f4f7fb;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+.howto-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: scale(1.04);
+}
+
+.howto-close:focus-visible,
+.howto-actions .btn:focus-visible,
+.howto-checkbox input:focus-visible {
+  outline: 2px solid rgba(87, 161, 255, 0.9);
+  outline-offset: 2px;
+}
+
+body.howto-modal-open {
+  overflow: hidden;
+}
+
+/* ===== Force topbar how-to button style ===== */
+
+.top-link-button,
+button.top-link-button,
+.top-links .top-link-button,
+nav .top-link-button {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 8px 12px !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid #1f2937 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #e2e8f0 !important;
+  text-decoration: none !important;
+  font: inherit !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.top-link-button:hover,
+button.top-link-button:hover,
+.top-links .top-link-button:hover {
+  border-color: rgba(34, 197, 94, 0.4) !important;
+  color: #b5f3c4 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.18) !important;
+  transform: translateY(-1px) !important;
+}
+
+.top-link-button:focus,
+.top-link-button:focus-visible {
+  outline: 2px solid rgba(87, 161, 255, 0.9) !important;
+  outline-offset: 2px !important;
+}
+
+/* clickability fix for topbar + hidden modal */
+
+.topbar,
+.top-links {
+  position: relative;
+  z-index: 50;
+}
+
+.top-link-button,
+#howto-open-guide {
+  position: relative;
+  z-index: 60;
+  pointer-events: auto;
+}
+
+.howto-modal.hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.howto-modal:not(.hidden) {
+  pointer-events: auto;
+}
+
+/* ===== Upload focus highlight ===== */
+
+.upload-guide-pulse {
+  position: relative;
+  z-index: 5;
+  border-color: rgba(87, 161, 255, 0.95) !important;
+  box-shadow:
+    0 0 0 3px rgba(87, 161, 255, 0.28),
+    0 0 28px rgba(87, 161, 255, 0.22) !important;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+#drop-zone.upload-guide-pulse {
+  border-color: rgba(87, 161, 255, 0.95) !important;
+  background: rgba(87, 161, 255, 0.08) !important;
+}
+
+/* ===== Step hint guide ===== */
+
+.guide-highlight {
+  position: relative;
+  z-index: 20;
+  border-radius: 16px;
+  outline: 3px solid rgba(87, 161, 255, 0.95);
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 6px rgba(87, 161, 255, 0.16),
+    0 0 0 9999px rgba(6, 10, 20, 0.58);
+  transition: box-shadow 0.2s ease, outline-color 0.2s ease;
+}
+
+.guide-popover {
+  position: fixed;
+  z-index: 2200;
+  width: min(320px, calc(100vw - 24px));
+  background: rgba(14, 22, 38, 0.98);
+  color: #f4f7fb;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+  padding: 18px 18px 16px;
+  pointer-events: auto;
+}
+
+.guide-popover.hidden {
+  display: none;
+}
+
+.guide-popover[data-side="right"]::after,
+.guide-popover[data-side="left"]::after,
+.guide-popover[data-side="top"]::after,
+.guide-popover[data-side="bottom"]::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: rgba(14, 22, 38, 0.98);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  transform: rotate(45deg);
+}
+
+.guide-popover[data-side="right"]::after {
+  left: -7px;
+  top: calc(50% - 6px);
+}
+
+.guide-popover[data-side="left"]::after {
+  right: -7px;
+  top: calc(50% - 6px);
+  transform: rotate(225deg);
+}
+
+.guide-popover[data-side="bottom"]::after {
+  top: -7px;
+  left: calc(50% - 6px);
+}
+
+.guide-popover[data-side="top"]::after {
+  bottom: -7px;
+  left: calc(50% - 6px);
+  transform: rotate(225deg);
+}
+
+.guide-step {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(87, 161, 255, 0.14);
+  border: 1px solid rgba(87, 161, 255, 0.24);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.guide-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.guide-text {
+  margin: 0 0 14px;
+  color: rgba(244, 247, 251, 0.84);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.guide-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.guide-actions .btn {
+  min-width: 108px;
+}
+
+body.guide-open {
+  overflow: hidden;
 }
